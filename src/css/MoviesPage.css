@@ -1,0 +1,56 @@
+/* MoviesPage.css */
+.movies-page {
+  text-align: center;
+  padding: 20px;
+}
+
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 kolumny, każda o równej szerokości */
+  gap: 20px; /* Odstęp między kafelkami */
+  justify-items: center; /* Centrowanie elementów w każdej komórce */
+  margin-top: 20px;
+}
+
+.movie-item {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%; /* Zapewnia, że elementy mają 100% szerokości dostępnej przestrzeni */
+  max-width: 300px; /* Maksymalna szerokość kafelka */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Cień dla kafelka */
+  text-align: left;
+  padding: 10px;
+}
+
+.movie-poster img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.movie-info {
+  padding-top: 10px;
+}
+
+.movie-info h2 {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.movie-info p {
+  margin: 5px 0;
+}
+
+/* Zapewnienie responsywności (mniej niż 3 kolumny na małych ekranach) */
+@media (max-width: 900px) {
+  .movie-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 kolumny na średnich ekranach */
+  }
+}
+
+@media (max-width: 600px) {
+  .movie-list {
+    grid-template-columns: 1fr; /* 1 kolumna na małych ekranach */
+  }
+}

@@ -1,0 +1,256 @@
+<wsdl:definitions name="DatabaseService" targetNamespace="http://tempuri.org/">
+<wsp:Policy wsu:Id="BasicHttpBinding_IDatabaseService_policy">
+<wsp:ExactlyOne>
+<wsp:All>
+<wsoma:OptimizedMimeSerialization/>
+</wsp:All>
+</wsp:ExactlyOne>
+</wsp:Policy>
+<wsdl:types>
+<xsd:schema targetNamespace="http://tempuri.org/Imports">
+<xsd:import schemaLocation="http://localhost:8080/DatabaseService?xsd=xsd0" namespace="http://tempuri.org/"/>
+<xsd:import schemaLocation="http://localhost:8080/DatabaseService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+<xsd:import schemaLocation="http://localhost:8080/DatabaseService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CinemaTicketServer.Classes"/>
+<xsd:import schemaLocation="http://localhost:8080/DatabaseService?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="IDatabaseService_GetMovies_InputMessage">
+<wsdl:part name="parameters" element="tns:GetMovies"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetMovies_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetMoviesResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddMovie_InputMessage">
+<wsdl:part name="parameters" element="tns:AddMovie"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddMovie_OutputMessage">
+<wsdl:part name="parameters" element="tns:AddMovieResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveMovies_InputMessage">
+<wsdl:part name="parameters" element="tns:SaveMovies"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveMovies_OutputMessage">
+<wsdl:part name="parameters" element="tns:SaveMoviesResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetScreenings_InputMessage">
+<wsdl:part name="parameters" element="tns:GetScreenings"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetScreenings_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetScreeningsResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddScreening_InputMessage">
+<wsdl:part name="parameters" element="tns:AddScreening"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddScreening_OutputMessage">
+<wsdl:part name="parameters" element="tns:AddScreeningResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveScreenings_InputMessage">
+<wsdl:part name="parameters" element="tns:SaveScreenings"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveScreenings_OutputMessage">
+<wsdl:part name="parameters" element="tns:SaveScreeningsResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetAccounts_InputMessage">
+<wsdl:part name="parameters" element="tns:GetAccounts"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetAccounts_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetAccountsResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddAccount_InputMessage">
+<wsdl:part name="parameters" element="tns:AddAccount"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddAccount_OutputMessage">
+<wsdl:part name="parameters" element="tns:AddAccountResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveAccounts_InputMessage">
+<wsdl:part name="parameters" element="tns:SaveAccounts"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveAccounts_OutputMessage">
+<wsdl:part name="parameters" element="tns:SaveAccountsResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetReservations_InputMessage">
+<wsdl:part name="parameters" element="tns:GetReservations"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_GetReservations_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetReservationsResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddReservation_InputMessage">
+<wsdl:part name="parameters" element="tns:AddReservation"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_AddReservation_OutputMessage">
+<wsdl:part name="parameters" element="tns:AddReservationResponse"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveReservations_InputMessage">
+<wsdl:part name="parameters" element="tns:SaveReservations"/>
+</wsdl:message>
+<wsdl:message name="IDatabaseService_SaveReservations_OutputMessage">
+<wsdl:part name="parameters" element="tns:SaveReservationsResponse"/>
+</wsdl:message>
+<wsdl:portType name="IDatabaseService">
+<wsdl:operation name="GetMovies">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/GetMovies" message="tns:IDatabaseService_GetMovies_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/GetMoviesResponse" message="tns:IDatabaseService_GetMovies_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="AddMovie">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/AddMovie" message="tns:IDatabaseService_AddMovie_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/AddMovieResponse" message="tns:IDatabaseService_AddMovie_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="SaveMovies">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/SaveMovies" message="tns:IDatabaseService_SaveMovies_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/SaveMoviesResponse" message="tns:IDatabaseService_SaveMovies_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="GetScreenings">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/GetScreenings" message="tns:IDatabaseService_GetScreenings_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/GetScreeningsResponse" message="tns:IDatabaseService_GetScreenings_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="AddScreening">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/AddScreening" message="tns:IDatabaseService_AddScreening_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/AddScreeningResponse" message="tns:IDatabaseService_AddScreening_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="SaveScreenings">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/SaveScreenings" message="tns:IDatabaseService_SaveScreenings_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/SaveScreeningsResponse" message="tns:IDatabaseService_SaveScreenings_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="GetAccounts">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/GetAccounts" message="tns:IDatabaseService_GetAccounts_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/GetAccountsResponse" message="tns:IDatabaseService_GetAccounts_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="AddAccount">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/AddAccount" message="tns:IDatabaseService_AddAccount_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/AddAccountResponse" message="tns:IDatabaseService_AddAccount_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="SaveAccounts">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/SaveAccounts" message="tns:IDatabaseService_SaveAccounts_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/SaveAccountsResponse" message="tns:IDatabaseService_SaveAccounts_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="GetReservations">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/GetReservations" message="tns:IDatabaseService_GetReservations_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/GetReservationsResponse" message="tns:IDatabaseService_GetReservations_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="AddReservation">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/AddReservation" message="tns:IDatabaseService_AddReservation_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/AddReservationResponse" message="tns:IDatabaseService_AddReservation_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="SaveReservations">
+<wsdl:input wsaw:Action="http://tempuri.org/IDatabaseService/SaveReservations" message="tns:IDatabaseService_SaveReservations_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IDatabaseService/SaveReservationsResponse" message="tns:IDatabaseService_SaveReservations_OutputMessage"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="BasicHttpBinding_IDatabaseService" type="tns:IDatabaseService">
+<wsp:PolicyReference URI="#BasicHttpBinding_IDatabaseService_policy"/>
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="GetMovies">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/GetMovies" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AddMovie">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/AddMovie" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SaveMovies">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/SaveMovies" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetScreenings">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/GetScreenings" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AddScreening">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/AddScreening" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SaveScreenings">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/SaveScreenings" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetAccounts">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/GetAccounts" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AddAccount">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/AddAccount" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SaveAccounts">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/SaveAccounts" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GetReservations">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/GetReservations" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AddReservation">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/AddReservation" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SaveReservations">
+<soap:operation soapAction="http://tempuri.org/IDatabaseService/SaveReservations" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="DatabaseService">
+<wsdl:port name="BasicHttpBinding_IDatabaseService" binding="tns:BasicHttpBinding_IDatabaseService">
+<soap:address location="http://localhost:8080/DatabaseService"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
