@@ -24,7 +24,6 @@ const MoviesPage: React.FC = () => {
           <GetMovies xmlns="http://tempuri.org/" />
         </soap:Body>
       </soap:Envelope>`;
-      console.log('RAW response:', soapRequest);
       try {
         const response = await axios.post('http://localhost:8080/DatabaseService', soapRequest, {
           headers: {
@@ -36,11 +35,10 @@ const MoviesPage: React.FC = () => {
         const parser = new XMLParser({
           ignoreAttributes: false,
           attributeNamePrefix: '',
-          removeNSPrefix: true // <— TO DODAĆ
+          removeNSPrefix: true
         });
 
         const json = parser.parse(response.data);
-        console.log(JSON.stringify(json, null, 2));
 
         const moviesRaw = json['Envelope']['Body']['GetMoviesResponse']['GetMoviesResult']['Movie'];
         const moviesData = Array.isArray(moviesRaw) ? moviesRaw : [moviesRaw];
@@ -57,10 +55,7 @@ const MoviesPage: React.FC = () => {
               ? [m.Actors.string]
               : [],
         }));
-        console.log(moviesArray);
         setMovies(moviesArray);
-        //movies jest puste, mimo tego, że moviesArray nie jest puste
-        console.log(movies);
       } catch (err: any) {
         setError(`Błąd pobierania filmów: ${err.message}`);
       } finally {

@@ -1,57 +1,99 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { XMLParser } from 'fast-xml-parser';
+import { useNavigate } from 'react-router-dom';
+import '../css/AuthPages.css';
 
-const RegisterPage: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+// Helper to build SOAP envelope with Credentials header
+function buildSoapEnvelope(operation: string, bodyXml: string, username: string, password: string, type: string): string {
+  return `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <Credentials xmlns="http://tempuri.org/soapheaders">
+      <Type>${type}</Type>
+      <Username>${username}</Username>
+      <Password>${password}</Password>
+    </Credentials>
+  </soap:Header>
+  <soap:Body>
+  <RegisterUser xmlns="http://tempuri.org/" />
+  </soap:Body>
+</soap:Envelope>`;
+}
+
+export const RegisterPage: React.FC = () => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Tutaj dodaj logikę rejestracji
-    alert(`Rejestracja użytkownika: ${name}`);
+    const body = `<username>${username}</username><password>${password}</password>`;
+    const soapRequest = buildSoapEnvelope(
+      'RegisterUser',
+      '',
+      username,
+      password,
+      'Registration'
+    );
+
+    try {
+      const res = await axios.post(
+        'http://localhost:8080/ReservationService',
+        soapRequest,
+        {
+          headers: {
+            'Content-Type': 'text/xml;charset=UTF-8',
+            'SOAPAction': 'http://tempuri.org/IReservationService/RegisterUser'
+          }
+        }
+      );
+      const parser = new XMLParser({
+                ignoreAttributes: false,
+                attributeNamePrefix: '',
+                removeNSPrefix: true
+              });
+      const json = parser.parse(res.data);
+      const result = json.Envelope.Body.RegisterUserResponse?.RegisterUserResult;
+      const operationStatus = json.Envelope?.Header?.OperationStatus;
+      console.log('OS:', operationStatus);
+      if (operationStatus === 'Success') {
+        setMessage('Rejestracja zakończona sukcesem!');
+        navigate('/Login');
+      } else {
+        setMessage('Rejestracja nie powiodła się. Użytkownik może już istnieć.');
+      }
+    } catch {
+      setMessage('Błąd podczas rejestracji.');
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-xl p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">Rejestracja</h2>
-      <form onSubmit={handleRegister} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Imię i nazwisko</label>
+    <div className="auth-page">
+      <div className="auth-box">
+        <h2>Rejestracja</h2>
+        <form onSubmit={handleRegister}>
           <input
             type="text"
-            className="w-full border rounded px-3 py-2 mt-1"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Login"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            className="w-full border rounded px-3 py-2 mt-1"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Hasło</label>
           <input
             type="password"
-            className="w-full border rounded px-3 py-2 mt-1"
+            placeholder="Hasło"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
           />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-        >
-          Zarejestruj się
-        </button>
-      </form>
+          <button type="submit">Zarejestruj</button>
+        </form>
+        {message && <p className="info">{message}</p>}
+      </div>
     </div>
   );
 };

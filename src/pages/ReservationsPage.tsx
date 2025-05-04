@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import '../css/styles.css';
-import { Reservation } from '../types/Reservation';
+// src/pages/ReservationsPage.tsx
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
-
-interface Props {
-  username: string;
-}
-
-const ReservationList: React.FC<Props> = ({ username }) => {
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+const ReservationsPage: React.FC = () => {
+  const { username } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/reservations/${username}`)
-      .then(res => res.json())
-      .then(data => setReservations(data));
-  }, [username]);
+    if (!username) {
+      navigate('/Login');
+    }
+  }, [username, navigate]);
+
+  if (!username) return null; // Zapobiega wyświetleniu zawartości podczas przekierowania
 
   return (
-    <div className="container">
-      <h2>Twoje Rezerwacje</h2>
-      <ul>
-        {reservations.map(r => (
-          <li key={r.reservationId}>Seans ID: {r.screeningId}</li>
-        ))}
-      </ul>
+    <div className="reservations-page">
+      <h1>Twoje rezerwacje</h1>
+      <p>Witaj, {username}! Tutaj będą wyświetlane Twoje rezerwacje.</p>
     </div>
   );
 };
 
-export default ReservationList;
+export default ReservationsPage;
