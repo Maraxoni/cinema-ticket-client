@@ -1,10 +1,10 @@
-.screenings-page {
+.reservations-page {
   text-align: center;
   padding: 20px;
   padding-top: 2rem;
 }
 
-.screening-list {
+.reservation-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 kolumny, każda o równej szerokości */
   gap: 20px; /* Odstęp między kafelkami */
@@ -12,7 +12,7 @@
   margin-top: 20px;
 }
 
-.screening-item {
+.reservation-item {
   max-width: 300px;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -27,15 +27,15 @@
   border-radius: 8px;
 }
 
-.screening-info {
+.reservation-info {
   margin-top: 10px;
 }
 
-.screening-info h2 {
+.reservation-info h2 {
   font-size: 1.2rem;
 }
 
-.screening-info button {
+.reservation-info button {
   margin-top: 10px;
   padding: 8px 12px;
   background-color: #007bff;

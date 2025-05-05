@@ -3,6 +3,7 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import { useNavigate } from 'react-router-dom';
 import '../css/AuthPages.css';
+import { useUser } from '../context/UserContext';
 
 // Helper to build SOAP envelope with Credentials header
 function buildSoapEnvelope(operation: string, bodyXml: string, username: string, password: string, type: string): string {
@@ -28,6 +29,7 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useUser();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,12 +59,12 @@ export const LoginPage: React.FC = () => {
                 removeNSPrefix: true
               });
       const json = parser.parse(res.data);
-      const result = json.Envelope.Body.RegisterUserResponse?.RegisterUserResult;
       const operationStatus = json.Envelope?.Header?.OperationStatus;
       console.log('OS:', operationStatus);
-      if (operationStatus === 'Success') {
+      if (operationStatus === "Success") {
         setMessage('Logowanie zakończone sukcesem!');
-        localStorage.login(username);
+        login(username);
+        console.log('OS2:', operationStatus);
         navigate('/');
       } else {
         setMessage('Logowanie nie powiodło się. Dane mogą być błędne.');

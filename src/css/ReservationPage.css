@@ -1,0 +1,66 @@
+.reservation-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Środek poziomy */
+  padding: 20px;
+  padding-top: 2rem;
+}
+
+.seats-container {
+  display: grid;
+  grid-template-columns: repeat(20, 40px); /* 20 kafelków w wierszu */
+  gap: 8px;
+  justify-content: center; /* Wycentrowanie gridu */
+  margin: 20px 0;
+}
+
+.seat {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.seat:hover:not(.unavailable) {
+  transform: scale(1.1);
+}
+
+.seat.available {
+  background-color: #4caf50;
+  color: white;
+}
+
+.seat.unavailable {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.seat.selected {
+  background-color: #ff9800;
+  color: white;
+}
+
+.reserve-button {
+  margin-top: 16px;
+  padding: 10px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reserve-button:disabled {
+  background-color: #90caf9;
+  cursor: not-allowed;
+}
+
+.reserve-button:not(:disabled):hover {
+  background-color: #1565c0;
+}

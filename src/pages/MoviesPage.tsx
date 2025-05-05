@@ -42,19 +42,38 @@ const MoviesPage: React.FC = () => {
 
         const moviesRaw = json['Envelope']['Body']['GetMoviesResponse']['GetMoviesResult']['Movie'];
         const moviesData = Array.isArray(moviesRaw) ? moviesRaw : [moviesRaw];
+        const moviesArray: Movie[] = moviesData.map((m: any) => {
+          // Log surowej zawartości pola Poster
+          console.log(`Raw Poster for movieID=${m.MovieID}:`, m.Poster);
 
-        const moviesArray: Movie[] = moviesData.map((m: any) => ({
-          movieID: m.MovieID,
-          title: m.Title,
-          director: m.Director,
-          description: m.Description,
-          poster: typeof m.Poster === 'string' ? m.Poster : undefined,
-          actors: Array.isArray(m.Actors?.string)
+          let posterBytes: Uint8Array | undefined;
+          if (m.Poster) {
+            const b64 = typeof m.Poster === 'string' ? m.Poster : m.Poster[0];
+            const binStr = window.atob(b64);
+            posterBytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) {
+              posterBytes[i] = binStr.charCodeAt(i);
+            }
+            // Log decoded bytes
+            console.log(`Decoded Poster bytes for movieID=${m.MovieID}:`, posterBytes);
+          }
+
+          const actors = Array.isArray(m.Actors?.string)
             ? m.Actors.string
             : m.Actors?.string
-              ? [m.Actors.string]
-              : [],
-        }));
+            ? [m.Actors.string]
+            : [];
+
+          return {
+            movieID: Number(m.MovieID),
+            title: m.Title,
+            director: m.Director,
+            description: m.Description,
+            poster: posterBytes,
+            actors,
+          };
+        });
+
         setMovies(moviesArray);
       } catch (err: any) {
         setError(`Błąd pobierania filmów: ${err.message}`);
@@ -65,6 +84,19 @@ const MoviesPage: React.FC = () => {
 
     fetchMovies();
   }, []);
+
+  const convertToBase64 = (poster?: Uint8Array) => {
+    console.log("C: ", poster);
+    if (!poster) {
+      return 'https://via.placeholder.com/150';
+    }
+    let binary = '';
+    for (let i = 0; i < poster.length; i++) {
+      binary += String.fromCharCode(poster[i]);
+    }
+    console.log("B: ", binary);
+    return `data:image/jpeg;base64,${window.btoa(binary)}`;
+  };
 
   if (loading) return <p>Ładowanie filmów…</p>;
   if (error) return <p className="error">{error}</p>;
@@ -78,8 +110,8 @@ const MoviesPage: React.FC = () => {
             <div className="movie-poster">
               {/* Placeholder poster image */}
               <img
-                src={m.poster ? m.poster : 'https://via.placeholder.com/150'}
-                alt={m.title}
+                src={convertToBase64(m?.poster)}  // Konwersja poster do base64
+                alt={m?.title || 'Plakat'}  // Alternatywny tekst, jeśli nie ma plakatu
                 className="poster-img"
               />
             </div>

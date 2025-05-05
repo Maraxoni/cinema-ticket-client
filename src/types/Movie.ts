@@ -4,6 +4,6 @@ export interface Movie {
     director: string;
     actors: string[];
     description: string;
-    poster?: string;
+    poster?: Uint8Array;
   }
   

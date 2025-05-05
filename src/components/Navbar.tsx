@@ -1,19 +1,20 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext'; // Poprawiony import
+import { useUser } from '../context/UserContext';
 import '../css/Navbar.css';
 
 const Navbar: React.FC = () => {
-  const { username, logout } = useUser(); // Użycie useUser, żeby uzyskać dane użytkownika
+  const { username, logout } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // Wywołanie funkcji logout, która usuwa użytkownika z localStorage i stanu
-    navigate('/'); // Przekierowanie na stronę główną po wylogowaniu
+    logout();
+    navigate('/');
   };
 
   return (
     <nav className="navbar">
+      <div className="spacer" />
       <div className="links">
         <Link to="/">Home Page</Link>
         <Link to="/movies">Movies List</Link>
@@ -24,8 +25,8 @@ const Navbar: React.FC = () => {
       <div className="login">
         {username ? (
           <>
-            <span>Welcome, {username}</span> {/* Wyświetlanie nazwy użytkownika */}
-            <button onClick={handleLogout} className="logout-btn">Logout</button> {/* Przycisk do wylogowania */}
+            <span>Welcome, {username}</span>
+            <button onClick={handleLogout} className="logout-btn">Logout</button>
           </>
         ) : (
           <>

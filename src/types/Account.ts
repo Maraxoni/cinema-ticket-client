@@ -7,5 +7,4 @@ export interface Account {
   username: string;
   password: string;
   type: AccountType;
-  reservationIds: number[];
 }

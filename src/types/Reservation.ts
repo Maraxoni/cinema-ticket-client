@@ -1,6 +1,6 @@
 export interface Reservation {
-    reservationId: number;
-    screeningId: number;
-    accountId: number;
-  }
-  
+  reservationId: number;
+  screeningId: number;
+  username: string;
+  seats?: number[];
+}

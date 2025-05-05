@@ -14,10 +14,6 @@ const ScreeningsPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-        console.log('Zaktualizowane wyświetlenia:', screenings);
-      }, [screenings]);
-
-  useEffect(() => {
     const fetchData = async () => {
       const parser = new XMLParser({
         ignoreAttributes: false,
@@ -66,26 +62,47 @@ const ScreeningsPage: React.FC = () => {
           movieID: parseInt(s.MovieID),
           startTime: s.StartTime,
           endTime: s.EndTime,
-          availableSeats: [], // you can parse if included
+          availableSeats: s.AvailableSeats,
         }));
 
         const moviesRaw = moviesJson['Envelope']['Body']['GetMoviesResponse']['GetMoviesResult']['Movie'];
         const moviesData = Array.isArray(moviesRaw) ? moviesRaw : [moviesRaw];
-        const moviesArray: Movie[] = moviesData.map((m: any) => ({
-          movieID: parseInt(m.MovieID),
-          title: m.Title,
-          director: m.Director,
-          description: m.Description,
-          poster: typeof m.Poster === 'string' ? m.Poster : undefined,
-          actors: Array.isArray(m.Actors?.string)
+        const moviesArray: Movie[] = moviesData.map((m: any) => {
+          // Log surowej zawartości pola Poster
+          console.log(`Raw Poster for movieID=${m.MovieID}:`, m.Poster);
+
+          let posterBytes: Uint8Array | undefined;
+          if (m.Poster) {
+            const b64 = typeof m.Poster === 'string' ? m.Poster : m.Poster[0];
+            const binStr = window.atob(b64);
+            posterBytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) {
+              posterBytes[i] = binStr.charCodeAt(i);
+            }
+            // Log decoded bytes
+            console.log(`Decoded Poster bytes for movieID=${m.MovieID}:`, posterBytes);
+          }
+
+          const actors = Array.isArray(m.Actors?.string)
             ? m.Actors.string
             : m.Actors?.string
               ? [m.Actors.string]
-              : [],
-        }));
+              : [];
+
+          return {
+            movieID: Number(m.MovieID),
+            title: m.Title,
+            director: m.Director,
+            description: m.Description,
+            poster: posterBytes,
+            actors,
+          };
+        });
+
 
         setScreenings(screeningsArray);
         setMovies(moviesArray);
+        console.log('Movies RAW:', moviesArray);
       } catch (err: any) {
         setError('Błąd pobierania danych: ' + err.message);
       } finally {
@@ -95,6 +112,19 @@ const ScreeningsPage: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const convertToBase64 = (poster?: Uint8Array) => {
+    console.log("C: ", poster);
+    if (!poster) {
+      return 'https://via.placeholder.com/150';
+    }
+    let binary = '';
+    for (let i = 0; i < poster.length; i++) {
+      binary += String.fromCharCode(poster[i]);
+    }
+    console.log("B: ", binary);
+    return `data:image/jpeg;base64,${window.btoa(binary)}`;
+  };
 
   if (loading) return <p>Ładowanie seansów…</p>;
   if (error) return <p className="error">{error}</p>;
@@ -107,18 +137,36 @@ const ScreeningsPage: React.FC = () => {
       <div className="screening-list">
         {screenings.map((s) => {
           const movie = getMovieById(s.movieID);
+          if (!movie) {
+            console.warn(`Nie znaleziono filmu o movieID=${s.movieID}`);
+          }
           return (
             <div key={s.screeningID} className="screening-item">
               <img
-                src={movie?.poster || 'https://via.placeholder.com/150'}
-                alt={movie?.title || 'Plakat'}
+                src={convertToBase64(movie?.poster)}  // Konwersja poster do base64
+                alt={movie?.title || 'Plakat'}  // Alternatywny tekst, jeśli nie ma plakatu
                 className="poster-img"
               />
               <div className="screening-info">
                 <h2>{movie?.title || 'Nieznany film'}</h2>
-                <p><strong>Start:</strong> {s.startTime}</p>
-                <p><strong>Koniec:</strong> {s.endTime}</p>
-                <button onClick={() => navigate(`/screening/${s.screeningID}`)}>Zobacz szczegóły</button>
+                {s?.startTime ? (
+                  <>
+                    <p><strong>Data:</strong> {new Date(s.startTime).toLocaleDateString('pl-PL')}</p>
+                    <p><strong>Godzina rozpoczęcia:</strong> {new Date(s.startTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
+                  </>
+                ) : (
+                  <p><strong>Start:</strong> Brak danych</p>
+                )}
+                {s?.endTime ? (
+                  <>
+                    <p><strong>Godzina zakończenia:</strong> {new Date(s.endTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
+                  </>
+                ) : (
+                  <p><strong>Start:</strong> Brak danych</p>
+                )}
+                <button onClick={() => navigate('/reservation', { state: { screening: s } })}>
+                  Zarezerwuj miejsca
+                </button>
               </div>
             </div>
           );
