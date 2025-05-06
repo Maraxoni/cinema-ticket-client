@@ -36,6 +36,7 @@
 }
 
 .reservation-info button {
+  margin: 5px;
   margin-top: 10px;
   padding: 8px 12px;
   background-color: #007bff;
@@ -43,4 +44,5 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  gap: 10px;
 }

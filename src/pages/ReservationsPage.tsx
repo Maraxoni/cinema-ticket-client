@@ -7,6 +7,7 @@ import { Reservation } from '../types/Reservation';
 import { Screening } from '../types/Screening';
 import { Movie } from '../types/Movie';
 import '../css/ReservationsPage.css';
+import jsPDF from 'jspdf';
 
 const ReservationsPage: React.FC = () => {
   const { username } = useUser();
@@ -99,7 +100,7 @@ const ReservationsPage: React.FC = () => {
           movieID: parseInt(s.MovieID),
           startTime: s.StartTime,
           endTime: s.EndTime,
-          availableSeats: [], // lub parsuj jeśli dostępne
+          availableSeats: s.AvailableSeats, // lub parsuj jeśli dostępne
         }));
 
         const moviesData = Array.isArray(rawMovies) ? rawMovies : [rawMovies];
@@ -134,8 +135,6 @@ const ReservationsPage: React.FC = () => {
             actors,
           };
         });
-
-
         setReservations(reservationArray.filter(r => r.username === username));
         setScreenings(screeningsArray);
         setMovies(moviesArray);
@@ -193,6 +192,29 @@ const ReservationsPage: React.FC = () => {
     }
   };
 
+  const handlePrint = async (reservationId: number) => {
+    const reservation = reservations.find(r => r.reservationId === reservationId);
+    if (!reservation) return;
+
+    const screening = getScreeningById(reservation.screeningId);
+    const movie = screening ? getMovieById(screening.movieID) : undefined;
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Cinema Ticket', 20, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Reservation ID: ${reservation.reservationId}`, 20, 40);
+    doc.text(`Movie: ${movie?.title ?? 'Unknown'}`, 20, 50);
+    doc.text(`Date: ${new Date(screening?.startTime ?? '').toLocaleDateString('pl-PL')}`, 20, 60);
+    doc.text(`Time: ${new Date(screening?.startTime ?? '').toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`, 20, 70);
+    doc.text(`Seats: ${reservation.seats?.map(i => i + 1).join(', ')}`, 20, 80);
+    doc.text(`Username: ${reservation.username}`, 20, 90);
+
+    doc.save(`ticket-${reservation.reservationId}.pdf`);
+  };
+
   if (loading) return <p>Ładowanie…</p>;
   if (error) return <p className="error">{error}</p>;
 
@@ -203,7 +225,7 @@ const ReservationsPage: React.FC = () => {
         {reservations.map(res => {
           const screening = getScreeningById(res.screeningId);
           const movie = screening ? getMovieById(screening.movieID) : undefined;
-
+          console.log("Check: " + screening?.screeningID + screening?.availableSeats);
           return (
             <div key={res.reservationId} className="reservation-item">
               <img
@@ -223,7 +245,19 @@ const ReservationsPage: React.FC = () => {
                 )}
                 <p><strong>Miejsca:</strong> {res.seats ? res.seats.map(i => i + 1).join(', ') : 'Brak'}</p>
                 <button onClick={() => handleDelete(res.reservationId)}>
-                  Usuń rezerwację
+                  Delete reservation
+                </button>
+                <button onClick={() => navigate('/edit-reservation', {
+                  state: {
+                    screening,
+                    reservationId: res.reservationId,
+                    reservedSeats: res.seats
+                  }
+                })}>
+                  Edit reservation
+                </button>
+                <button onClick={() => handlePrint(res.reservationId)}>
+                  Print reservation
                 </button>
               </div>
             </div>

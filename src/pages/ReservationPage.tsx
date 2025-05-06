@@ -18,9 +18,7 @@ const ReservationPage: React.FC = () => {
 
   if (!screening) return null;
 
-  // 1. Wyciągamy rawData – może być już boolean[] albo obiektem z kluczem "boolean"
   const raw = (screening.availableSeats as any);
-  // 2. Normalizujemy do boolean[]
   const seatsArray: boolean[] = Array.isArray(raw)
     ? raw
     : Array.isArray(raw.boolean)

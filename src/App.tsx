@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage';
 import Navbar from './components/Navbar';
 import ReservationsPage from './pages/ReservationsPage';
 import ReservationPage from './pages/ReservationPage';
+import ReservationEditPage from './pages/ReservationEditPage';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <Route path="/screenings" element={<ScreeningsPage />} />
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/reservations" element={<ReservationsPage />} />
+            <Route path="/edit-reservation" element={<ReservationEditPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Routes>
