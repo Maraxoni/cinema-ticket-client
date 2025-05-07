@@ -43,8 +43,10 @@ export const LoginPage: React.FC = () => {
     );
 
     try {
+      const baseUrl = process.env.REACT_APP_API_BASE_URL;
+      console.log("URL: " + baseUrl);
       const res = await axios.post(
-        'http://localhost:8080/ReservationService',
+        `${baseUrl}/ReservationService`,
         soapRequest,
         {
           headers: {
