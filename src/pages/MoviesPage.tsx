@@ -16,6 +16,8 @@ const MoviesPage: React.FC = () => {
 
   useEffect(() => {
     const fetchMovies = async () => {
+      const baseUrl = process.env.REACT_APP_API_BASE_URL;
+      console.log("URL: " + baseUrl);
       const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -25,7 +27,7 @@ const MoviesPage: React.FC = () => {
         </soap:Body>
       </soap:Envelope>`;
       try {
-        const response = await axios.post('http://localhost:8080/DatabaseService', soapRequest, {
+        const response = await axios.post(`${baseUrl}/DatabaseService`, soapRequest, {
           headers: {
             'Content-Type': 'text/xml;charset=UTF-8',
             'SOAPAction': 'http://tempuri.org/IDatabaseService/GetMovies',

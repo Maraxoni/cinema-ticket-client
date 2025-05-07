@@ -43,7 +43,7 @@ const ReservationPage: React.FC = () => {
     const screeningId = screening.screeningID;
     const accountUsername = username;
     const seats = selectedSeats;
-
+    console.log("Reservation: " + "screening: " + screeningId);
     const soapEnvelope = `
     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                       xmlns:tem="http://tempuri.org/">
@@ -60,7 +60,9 @@ const ReservationPage: React.FC = () => {
     </soapenv:Envelope>`.trim();
 
     try {
-      const response = await fetch('http://localhost:8080/ReservationService', {
+      const baseUrl = process.env.REACT_APP_API_BASE_URL;
+      console.log("URL: " + baseUrl);
+      const response = await fetch(`${baseUrl}/ReservationService`, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -70,6 +72,7 @@ const ReservationPage: React.FC = () => {
       });
 
       if (!response.ok) {
+        console.log('O:', screeningId);
         throw new Error(`SOAP fault: ${response.statusText}`);
       }
 

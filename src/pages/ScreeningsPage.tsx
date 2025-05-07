@@ -22,8 +22,10 @@ const ScreeningsPage: React.FC = () => {
       });
 
       try {
+        const baseUrl = process.env.REACT_APP_API_BASE_URL;
+        console.log("URL: " + baseUrl);
         const [screeningsRes, moviesRes] = await Promise.all([
-          axios.post('http://localhost:8080/DatabaseService', `
+          axios.post(`${baseUrl}/DatabaseService`, `
             <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                            xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -36,7 +38,7 @@ const ScreeningsPage: React.FC = () => {
               'SOAPAction': 'http://tempuri.org/IDatabaseService/GetScreenings',
             },
           }),
-          axios.post('http://localhost:8080/DatabaseService', `
+          axios.post(`${baseUrl}/DatabaseService`, `
             <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                            xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

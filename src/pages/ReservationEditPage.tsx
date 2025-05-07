@@ -71,8 +71,9 @@ const ReservationEditPage: React.FC = () => {
     </soapenv:Envelope>`.trim();
 
     try {
-      
-      const response = await fetch('http://localhost:8080/ReservationService', {
+      const baseUrl = process.env.REACT_APP_API_BASE_URL;
+       console.log("URL: " + baseUrl);
+      const response = await fetch(`${baseUrl}/ReservationService`, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/xml; charset=utf-8',
