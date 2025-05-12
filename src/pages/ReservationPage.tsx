@@ -88,7 +88,7 @@ const ReservationPage: React.FC = () => {
 
   return (
     <div className="reservation-page">
-      <h1>Wybierz miejsca</h1>
+      <h1>Choose seats</h1>
       <div className="seats-container">
         {seatsArray.map((isAvailable, index) => (
           <button
@@ -110,7 +110,7 @@ const ReservationPage: React.FC = () => {
         onClick={handleReserve}
         disabled={selectedSeats.length === 0}
       >
-        Zarezerwuj ({selectedSeats.length})
+        Make reservation ({selectedSeats.length})
       </button>
     </div>
   );

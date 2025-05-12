@@ -185,7 +185,6 @@ const ReservationsPage: React.FC = () => {
         },
       });
 
-      // Usuń rezerwację z lokalnego stanu (opcjonalne odświeżenie danych)
       setReservations(prev => prev.filter(r => r.reservationId !== reservationId));
     } catch (err: any) {
       console.error('Błąd usuwania rezerwacji:', err.message);
@@ -231,11 +230,11 @@ const ReservationsPage: React.FC = () => {
             <div key={res.reservationId} className="reservation-item">
               <img
                 src={convertToBase64(movie?.poster)}  // Konwersja poster do base64
-                alt={movie?.title || 'Plakat'}  // Alternatywny tekst, jeśli nie ma plakatu
+                alt={movie?.title || 'Poster'}
                 className="poster-img"
               />
               <div className="reservation-info">
-                <h2>{movie?.title || 'Nieznany film'}</h2>
+                <h2>{movie?.title || 'Unknown movie'}</h2>
                 {screening?.startTime ? (
                   <>
                     <p><strong>Date:</strong> {new Date(screening.startTime).toLocaleDateString('pl-PL')}</p>
