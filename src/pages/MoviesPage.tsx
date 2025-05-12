@@ -11,7 +11,7 @@ const MoviesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Zaktualizowane filmy:', movies);
+    console.log('Updated movies:', movies);
   }, [movies]);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const MoviesPage: React.FC = () => {
         const moviesRaw = json['Envelope']['Body']['GetMoviesResponse']['GetMoviesResult']['Movie'];
         const moviesData = Array.isArray(moviesRaw) ? moviesRaw : [moviesRaw];
         const moviesArray: Movie[] = moviesData.map((m: any) => {
-          // Log surowej zawartości pola Poster
+
           console.log(`Raw Poster for movieID=${m.MovieID}:`, m.Poster);
 
           let posterBytes: Uint8Array | undefined;
@@ -56,15 +56,15 @@ const MoviesPage: React.FC = () => {
             for (let i = 0; i < binStr.length; i++) {
               posterBytes[i] = binStr.charCodeAt(i);
             }
-            // Log decoded bytes
+
             console.log(`Decoded Poster bytes for movieID=${m.MovieID}:`, posterBytes);
           }
 
           const actors = Array.isArray(m.Actors?.string)
             ? m.Actors.string
             : m.Actors?.string
-            ? [m.Actors.string]
-            : [];
+              ? [m.Actors.string]
+              : [];
 
           return {
             movieID: Number(m.MovieID),
@@ -100,12 +100,12 @@ const MoviesPage: React.FC = () => {
     return `data:image/jpeg;base64,${window.btoa(binary)}`;
   };
 
-  if (loading) return <p>Ładowanie filmów…</p>;
+  if (loading) return <p>Loading movies…</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="movies-page">
-      <h1>Lista filmów</h1>
+      <h1>Movie list</h1>
       <div className="movie-list">
         {movies.map((m) => (
           <div key={m.movieID} className="movie-item">
@@ -113,15 +113,15 @@ const MoviesPage: React.FC = () => {
               {/* Placeholder poster image */}
               <img
                 src={convertToBase64(m?.poster)}  // Konwersja poster do base64
-                alt={m?.title || 'Plakat'}  // Alternatywny tekst, jeśli nie ma plakatu
+                alt={m?.title || 'Poster'}  // Alternatywny tekst, jeśli nie ma plakatu
                 className="poster-img"
               />
             </div>
             <div className="movie-info">
               <h2>{m.title}</h2>
-              <p><strong>Reżyser:</strong> {m.director}</p>
-              <p><strong>Opis:</strong> {m.description}</p>
-              <p><strong>Aktorzy:</strong> {Array.isArray(m.actors) ? m.actors.toString() : m.actors}</p>
+              <p><strong>Director:</strong> {m.director}</p>
+              <p><strong>Description:</strong> {m.description}</p>
+              <p><strong>Actors:</strong> {Array.isArray(m.actors) ? m.actors.toString() : m.actors}</p>
             </div>
           </div>
         ))}

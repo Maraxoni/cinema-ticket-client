@@ -102,12 +102,11 @@ const ReservationsPage: React.FC = () => {
           movieID: parseInt(s.MovieID),
           startTime: s.StartTime,
           endTime: s.EndTime,
-          availableSeats: s.AvailableSeats, // lub parsuj jeśli dostępne
+          availableSeats: s.AvailableSeats,
         }));
 
         const moviesData = Array.isArray(rawMovies) ? rawMovies : [rawMovies];
         const moviesArray: Movie[] = moviesData.map((m: any) => {
-          // Log surowej zawartości pola Poster
           console.log(`Raw Poster for movieID=${m.MovieID}:`, m.Poster);
 
           let posterBytes: Uint8Array | undefined;
@@ -118,7 +117,6 @@ const ReservationsPage: React.FC = () => {
             for (let i = 0; i < binStr.length; i++) {
               posterBytes[i] = binStr.charCodeAt(i);
             }
-            // Log decoded bytes
             console.log(`Decoded Poster bytes for movieID=${m.MovieID}:`, posterBytes);
           }
 
@@ -178,8 +176,9 @@ const ReservationsPage: React.FC = () => {
             </CancelReservation>
           </soap:Body>
         </soap:Envelope>`;
-
-      await axios.post('http://localhost:8080/ReservationService', soapRequest, {
+        const baseUrl = process.env.REACT_APP_API_BASE_URL;
+        console.log("URL: " + baseUrl);
+      await axios.post(`${baseUrl}/ReservationService`, soapRequest, {
         headers: {
           'Content-Type': 'text/xml;charset=UTF-8',
           'SOAPAction': 'http://tempuri.org/IReservationService/CancelReservation',
@@ -217,12 +216,12 @@ const ReservationsPage: React.FC = () => {
     doc.save(`ticket-${reservation.reservationId}.pdf`);
   };
 
-  if (loading) return <p>Ładowanie…</p>;
+  if (loading) return <p>Loading…</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="reservations-page">
-      <h1>Twoje rezerwacje</h1>
+      <h1>Your reservations</h1>
       <div className="reservation-list">
         {reservations.map(res => {
           const screening = getScreeningById(res.screeningId);
@@ -239,13 +238,13 @@ const ReservationsPage: React.FC = () => {
                 <h2>{movie?.title || 'Nieznany film'}</h2>
                 {screening?.startTime ? (
                   <>
-                    <p><strong>Data:</strong> {new Date(screening.startTime).toLocaleDateString('pl-PL')}</p>
-                    <p><strong>Godzina rozpoczęcia:</strong> {new Date(screening.startTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
+                    <p><strong>Date:</strong> {new Date(screening.startTime).toLocaleDateString('pl-PL')}</p>
+                    <p><strong>Start time:</strong> {new Date(screening.startTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
                   </>
                 ) : (
-                  <p><strong>Start:</strong> Brak danych</p>
+                  <p><strong>Start:</strong> No data</p>
                 )}
-                <p><strong>Miejsca:</strong> {res.seats ? res.seats.map(i => i + 1).join(', ') : 'Brak'}</p>
+                <p><strong>Seats:</strong> {res.seats ? res.seats.map(i => i + 1).join(', ') : 'Brak'}</p>
                 <button onClick={() => handleDelete(res.reservationId)}>
                   Delete reservation
                 </button>

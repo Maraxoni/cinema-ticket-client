@@ -128,14 +128,14 @@ const ScreeningsPage: React.FC = () => {
     return `data:image/jpeg;base64,${window.btoa(binary)}`;
   };
 
-  if (loading) return <p>Ładowanie seansów…</p>;
+  if (loading) return <p>Loading screenings…</p>;
   if (error) return <p className="error">{error}</p>;
 
   const getMovieById = (id: number) => movies.find((m) => m.movieID === id);
 
   return (
     <div className="screenings-page">
-      <h1>Lista seansów</h1>
+      <h1>Screening list</h1>
       <div className="screening-list">
         {screenings.map((s) => {
           const movie = getMovieById(s.movieID);
@@ -153,21 +153,21 @@ const ScreeningsPage: React.FC = () => {
                 <h2>{movie?.title || 'Nieznany film'}</h2>
                 {s?.startTime ? (
                   <>
-                    <p><strong>Data:</strong> {new Date(s.startTime).toLocaleDateString('pl-PL')}</p>
-                    <p><strong>Godzina rozpoczęcia:</strong> {new Date(s.startTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
+                    <p><strong>Date:</strong> {new Date(s.startTime).toLocaleDateString('pl-PL')}</p>
+                    <p><strong>Start time:</strong> {new Date(s.startTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
                   </>
                 ) : (
-                  <p><strong>Start:</strong> Brak danych</p>
+                  <p><strong>Start:</strong> No data</p>
                 )}
                 {s?.endTime ? (
                   <>
-                    <p><strong>Godzina zakończenia:</strong> {new Date(s.endTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
+                    <p><strong>End time:</strong> {new Date(s.endTime).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</p>
                   </>
                 ) : (
-                  <p><strong>Start:</strong> Brak danych</p>
+                  <p><strong>End:</strong> No data</p>
                 )}
                 <button onClick={() => navigate('/reservation', { state: { screening: s } })}>
-                  Zarezerwuj miejsca
+                  Reserve seats
                 </button>
               </div>
             </div>

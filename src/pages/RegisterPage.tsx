@@ -63,13 +63,13 @@ export const RegisterPage: React.FC = () => {
       const operationStatus = json.Envelope?.Header?.OperationStatus;
       console.log('OS:', operationStatus);
       if (operationStatus === 'Success') {
-        setMessage('Rejestracja zakończona sukcesem!');
+        setMessage('Registeration successful!');
         navigate('/Login');
       } else {
-        setMessage('Rejestracja nie powiodła się. Użytkownik może już istnieć.');
+        setMessage('Registeration failed. User can already exist.');
       }
     } catch {
-      setMessage('Błąd podczas rejestracji.');
+      setMessage('Error during registration.');
     }
   };
 

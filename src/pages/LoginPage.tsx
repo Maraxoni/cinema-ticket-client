@@ -64,33 +64,33 @@ export const LoginPage: React.FC = () => {
       const operationStatus = json.Envelope?.Header?.OperationStatus;
       console.log('OS:', operationStatus);
       if (operationStatus === "Success") {
-        setMessage('Logowanie zakończone sukcesem!');
+        setMessage('Login successful!');
         login(username);
         console.log('OS2:', operationStatus);
         navigate('/');
       } else {
-        setMessage('Logowanie nie powiodło się. Dane mogą być błędne.');
+        setMessage('Login was failed. Wrong username or password.');
       }
     } catch {
-      setMessage('Błąd podczas logowania.');
+      setMessage('Error during login.');
     }
   };
 
   return (
     <div className="auth-page">
       <div className="auth-box">
-        <h2>Logowanie</h2>
+        <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <input
             type="text"
-            placeholder="Login"
+            placeholder="Username"
             value={username}
             onChange={e => setUsername(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder="Hasło"
+            placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required

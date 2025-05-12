@@ -38,7 +38,6 @@ const ReservationEditPage: React.FC = () => {
     const isAvailable = seatsArray[index];
     const isPreviouslyReserved = reservedSeats.includes(index);
 
-    // Pozwalamy na kliknięcie tylko, jeśli miejsce jest dostępne albo użytkownik miał je zarezerwowane
     if (!isAvailable && !isPreviouslyReserved) return;
 
     setSelectedSeats(prev =>
@@ -86,17 +85,17 @@ const ReservationEditPage: React.FC = () => {
 
       const text = await response.text();
       console.log('SOAP Response:', text);
-      alert('Rezerwacja została zaktualizowana.');
+      alert('Reservation was updated.');
       navigate('/reservations');
     } catch (err) {
       console.error(err);
-      alert('Wystąpił błąd podczas edytowania rezerwacji.');
+      alert('Error occured during reservation.');
     }
   };
 
   return (
     <div className="reservation-page">
-      <h1>Edytuj rezerwację</h1>
+      <h1>Edit reservation</h1>
       <div className="seats-container">
         {seatsArray.map((isAvailable, index) => {
           console.log("A: " + seatsArray);
@@ -124,7 +123,7 @@ const ReservationEditPage: React.FC = () => {
         onClick={handleEdit}
         disabled={selectedSeats.length === 0}
       >
-        Zapisz zmiany ({selectedSeats.length})
+        Save changes ({selectedSeats.length})
       </button>
     </div>
   );
